@@ -1,0 +1,19 @@
+  
+<form method="post">
+    Informe o nome do funcionário..: 
+    <br>
+    <input type="text" name="nome" value="<?php echo $this->f->getNome(); ?>">
+    <br><br>
+    Informe o cpf do funcionário..: 
+    <br>
+    <input type="text" name="cpf" value="<?php echo $this->f->getCpf(); ?>">
+    <br><br>
+    Informe o salário do funcionário..: 
+    <br>
+    <input type="text" name="salario" value="<?php echo $this->f->getSalario(); ?>">
+    <br><br>
+    <input type="submit" value="Editar">
+</form>
+<br><br>
+<a href="<?php echo $this->url('application/default', 
+        array('controller' => 'index', 'action' => 'listar')); ?>">Listar Funcionario</a>
