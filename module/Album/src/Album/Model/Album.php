@@ -1,31 +1,54 @@
 <?php
 namespace Album\Model;
 
-// Adicione essas clausulas de importação
-use Zend\InputFilter\Factory as InputFactory;
+use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
+use Zend\InputFilter\InputFilterInterface; 
 
 #http://www.jasongrimes.org/2012/01/using-doctrine-2-in-zend-framework-2/
-class Album implements InputFilterAwareInterface
+
+/**
+ * A music album.
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="album")
+ * @property string $artist
+ * @property string $title
+ * @property int $id
+ */
+class Album extends BaseModel implements InputFilterAwareInterface
 {
-    public $id;
-    public $artist;
-    public $title;
-    protected $inputFilter; 
+    protected $inputFilter;
 
-    public function exchangeArray($data)
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer");
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+  
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $artist;
+  
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $title;
+  
+    /**
+     * Populate from an array.
+     *
+     * @param array $data
+     */
+    public function exchangeArray($data = array()) 
     {
-        $this->id     = (!empty($data['id'])) ? $data['id'] : null;
-        $this->artist = (!empty($data['artist'])) ? $data['artist'] : null;
-        $this->title  = (!empty($data['title'])) ? $data['title'] : null;
-    }
-
-    // Adicione o seguinte método:
-    public function getArrayCopy()
-    {
-        return get_object_vars($this);
+        $this->id = $data['id'];
+        $this->artist = $data['artist'];
+        $this->title = $data['title'];
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)
@@ -37,17 +60,15 @@ class Album implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-            $factory     = new InputFactory();
-
-            $inputFilter->add($factory->createInput(array(
+ 
+            $inputFilter->add(array(
                 'name'     => 'id',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'Int'),
                 ),
-            )));
-
-            $inputFilter->add($factory->createInput(array(
+            ));
+            $inputFilter->add(array(
                 'name'     => 'artist',
                 'required' => true,
                 'filters'  => array(
@@ -64,9 +85,8 @@ class Album implements InputFilterAwareInterface
                         ),
                     ),
                 ),
-            )));
-
-            $inputFilter->add($factory->createInput(array(
+            ));
+            $inputFilter->add(array(
                 'name'     => 'title',
                 'required' => true,
                 'filters'  => array(
@@ -83,8 +103,7 @@ class Album implements InputFilterAwareInterface
                         ),
                     ),
                 ),
-            )));
-
+            ));
             $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;
