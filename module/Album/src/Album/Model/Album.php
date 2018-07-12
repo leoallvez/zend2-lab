@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
+#http://www.jasongrimes.org/2012/01/using-doctrine-2-in-zend-framework-2/
 class Album implements InputFilterAwareInterface
 {
     public $id;
