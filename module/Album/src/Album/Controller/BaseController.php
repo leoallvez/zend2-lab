@@ -48,7 +48,7 @@ abstract class BaseController extends AbstractActionController
                 echo $e->getMessage();    
             }
         }
-        return new ViewModel(array('m' => $this->$model));
+        return new ViewModel(array('m' => $this->model));
     }
 
     public function editAction()
@@ -87,8 +87,7 @@ abstract class BaseController extends AbstractActionController
         }
         return new ViewModel(array('m' => $model));
     }
-
-
+    
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
