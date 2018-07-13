@@ -1,11 +1,10 @@
 <?php
 namespace Album\Controller;
 
-use Album\Form\AlbumForm;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\Controller\AbstractActionController;
 
-class BaseController extends AbstractActionController
+abstract class BaseController extends AbstractActionController
 {
     /**
     * @var DoctrineORMEntityManager
@@ -14,9 +13,9 @@ class BaseController extends AbstractActionController
     protected $model;
     protected $routeIndex;
 
-    public function getEntityManager()
+    private function getEntityManager()
     {
-        if (null === $this->em) {
+        if (null == $this->em) {
             $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         }
         return $this->em;
@@ -30,96 +29,101 @@ class BaseController extends AbstractActionController
     }
 
     public function addAction()
-    {
-        $form = new AlbumForm();
-        $form->get('submit')->setValue('Criar');
- 
+    { 
         $request = $this->getRequest();
-   
-        if ($request->isPost()) {
-            //$form->setInputFilter($this->model->getInputFilter());
-            //$form->setData($request->getPost());
 
-            //var_dump($request->getPost()); die;
- 
-            // if ($form->isValid()) {
-                $this->model->exchangeArray($form->getData());
+        if($request->isPost()) 
+        {      
+            try
+            {
+                //TODO: Validação dos dados vindo view.
+                $this->model->exchangeArray($request->getPost());
                 $this->getEntityManager()->persist($this->model);
                 $this->getEntityManager()->flush();
                 // Redirect to list
                 return $this->redirect()->toRoute($this->routeIndex);
-            // }
+            }
+            catch (Exception $e)
+            {
+                echo $e->getMessage();    
+            }
         }
-        return array('form' => $form);
+        return new ViewModel(array('m' => $this->$model));
     }
 
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
+        if (!$id) 
+        {
             return $this->redirect()->toRoute($this->routeIndex, array(
                 'action' => 'add'
             ));
         }
  
         $model = $this->getEntityManager()->find(get_class($this->model), $id);
-        if (!$model) {
+        if (!$model) 
+        {
             return $this->redirect()->toRoute($this->routeIndex, array(
                 'action' => 'index'
             ));
         }
  
-        $form  = new AlbumForm();
-        $form->bind($model);
-        $form->get('submit')->setAttribute('value', 'Editar');
- 
         $request = $this->getRequest();
-        if ($request->isPost()) {
-            $form->setInputFilter($model->getInputFilter());
-            $form->setData($request->getPost());
- 
-            if ($form->isValid()) {
+        if ($request->isPost())
+        {
+            try
+            {
+                //TODO: Validação dos dados vindo view.
+                $model->exchangeArray($request->getPost());
                 $this->getEntityManager()->flush();
- 
                 // Redirect to list of albums
                 return $this->redirect()->toRoute($this->routeIndex);
             }
+            catch (Exception $e)
+            {
+                echo $e->getMessage();    
+            }
         }
- 
-        return array(
-            'id' => $id,
-            'form' => $form,
-        );
+        return new ViewModel(array('m' => $model));
     }
 
 
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
+        if (!$id) 
+        {
             return $this->redirect()->toRoute($this->routeIndex);
         }
  
         $request = $this->getRequest();
-        if ($request->isPost()) {
-            $del = $request->getPost('del', 'Não');
- 
-            if ($del == 'Sim') {
-                $id = (int) $request->getPost('id');
-                $model = $this->getEntityManager()->find(get_class($this->model), $id);
-                if ($album) {
-                    $this->getEntityManager()->remove($album);
-                    $this->getEntityManager()->flush();
+        if ($request->isPost()) 
+        {
+            try
+            {
+                $del = $request->getPost('del', 'Não');
+                if ($del == 'Sim') 
+                {
+                    $id = (int) $request->getPost('id');
+                    $model = $this->getEntityManager()->find(get_class($this->model), $id);
+                    if ($model) 
+                    {
+                        $this->getEntityManager()->remove($model);
+                        $this->getEntityManager()->flush();
+                    }
                 }
+                // Redirect to list of albums
+                return $this->redirect()->toRoute($this->routeIndex);
             }
- 
-            // Redirect to list of albums
-            return $this->redirect()->toRoute($this->routeIndex);
+            catch (Exception $e)
+            {
+                echo $e->getMessage();    
+            }
         }
- 
-        return array(
-            'id'    => $id,
-            'album' => $this->getEntityManager()->find(get_class($this->model), $id)
+        
+        return new ViewModel(
+            array('m' => $this->getEntityManager()->find(get_class($this->model), $id))
         );
     }
 }

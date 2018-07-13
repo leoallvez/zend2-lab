@@ -7,18 +7,18 @@ $this->headTitle($title);
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
 <p>Certeza que você deseja deletar album?
-    '<?php echo $this->escapeHtml($album->title); ?>' do autor
-    '<?php echo $this->escapeHtml($album->artist); ?>'?
+    '<?php echo $this->escapeHtml($m->title); ?>' do autor
+    '<?php echo $this->escapeHtml($m->artist); ?>'?
 </p>
 <?php
 $url = $this->url('album', array(
     'action' => 'delete',
-    'id'     => $this->id,
+    'id'     => $m->id,
 ));
 ?>
 <form action="<?php echo $url; ?>" method="post">
 <div>
-    <input type="hidden" name="id" value="<?php echo (int) $album->id; ?>" />
+    <input type="hidden" name="id" value="<?php echo (int) $m->id; ?>" />
     <input type="submit" class="btn btn-success" name="del" value="Sim" />
     <input type="submit" class="btn btn-primary" name="del" value="Não" />
 </div>

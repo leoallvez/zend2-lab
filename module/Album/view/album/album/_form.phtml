@@ -1,0 +1,12 @@
+<form method="post" name="album" id="album">
+    <input type="hidden" name="id" value="<?php echo $this->m->id; ?>">
+    <label>
+        <span>Título: </span>
+        <input type="text" name="title" class="form-control" value="<?php echo $this->m->title; ?>">
+    </label><br>
+    <label>
+        <span>Artista: </span>
+        <input type="text" name="artist" class="form-control" value="<?php echo $this->m->artist; ?>">
+    </label><br>
+    <input type="submit" name="submit" class="btn btn-success" id="submitbutton" value="Criar">
+</form>

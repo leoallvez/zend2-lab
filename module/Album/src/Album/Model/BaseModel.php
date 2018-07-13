@@ -1,8 +1,15 @@
 <?php
 namespace Album\Model;
 
-class BaseModel
+abstract class BaseModel
 {
+    /**
+     * Populate from an array.
+     *
+     * @param array $data
+     */
+    abstract public function exchangeArray($data = array());
+    
     /**
      * Magic getter to expose protected properties.
      *
