@@ -4,6 +4,7 @@ return array(
         'invokables' => array(
             'Album\Controller\Album' => 'Album\Controller\AlbumController',
             'Album\Controller\Funcionario' => 'Album\Controller\FuncionarioController',
+            'Album\Controller\Usuario' => 'Album\Controller\UsuarioController',
         ),
     ),
      // A seção a seguir é nova e deve ser adicionada ao arquivo
@@ -37,13 +38,17 @@ return array(
                     ),
                 ),
             ),
-            'rota2' => array(
-                'type'    => 'Segment',
+            'usuario' => array(
+                'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/application/flag/[:action]/[:id][/]',
+                    'route'    => '/usuario[/][:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
+                        'controller' => 'Album\Controller\Usuario',
+                        'action'     => 'index',
                     ),
                 ),
             ),
@@ -53,6 +58,7 @@ return array(
         'template_path_stack' => array(
             'album' => __DIR__ . '/../view',
             'funcionario' => __DIR__ . '/../view',
+            'usuario' => __DIR__ . '/../view',
         ),
     ),
     'doctrine' => array(
@@ -72,7 +78,16 @@ return array(
                     // register `my_annotation_driver` for any entity under namespace `My\Namespace`
                     'Album\Model' => 'my_annotation_driver'
                 )
-            )
-        )
+            ),
+            'authentication' => array(
+                'orm_default' => array(
+                    'object_manager' => 'Doctrine\ORM\EntityManager',
+                    'identity_class' => 'Application\Album\Usuario',
+                    'identity_property' => 'email',
+                    'credential_property' => 'password',
+                    'credential_callable' => 'Album\Controller\UsuarioController::verifyCredential'
+                ),
+            ),
+        ),
     ),
 );

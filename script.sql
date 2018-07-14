@@ -31,6 +31,21 @@ CREATE TABLE if not exists public.funcionario
     CONSTRAINT funcionario_pk PRIMARY KEY(id)
 );
 
+CREATE SEQUENCE if not exists public.usuario_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 2147483647
+    CACHE 1;
+
+CREATE TABLE if not exists public.usuario
+(
+    id integer NOT NULL DEFAULT nextval('usuario_id_seq'::regclass),
+    email character varying (500) NOT NULL,
+	password character varying (500) NOT NULL,
+    CONSTRAINT funcionario_pk PRIMARY KEY(id)
+);
+
 INSERT INTO public.album (artist, title)
     VALUES  ('The  Military  Wives',  'In  My  Dreams');
 INSERT INTO public.album (artist, title)

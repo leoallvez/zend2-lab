@@ -20,6 +20,16 @@ return array(
                     ),
                 ),
             ),
+            'teste' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/teste',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Teste',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -73,7 +83,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Teste' => 'Application\Controller\TesteController',
         ),
     ),
     'view_manager' => array(
