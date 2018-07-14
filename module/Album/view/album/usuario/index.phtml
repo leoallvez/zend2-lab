@@ -1,0 +1,18 @@
+<?php
+    // module/Album/view/album/album/index.phtml:
+    $title = 'Login';
+    $this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<form method="post" name="index" id="index">
+    <label>
+        <span>Email: </span>
+        <input type="text" name="email" class="form-control" value="">
+    </label><br>
+    <label>
+        <span>Senha: </span>
+        <input type="text" name="password" class="form-control" value="">
+    </label><br>
+    <input type="submit" name="submit" class="btn btn-success" id="submitbutton" value="Entrar">
+</form>
