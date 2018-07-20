@@ -19,7 +19,8 @@ class UsuarioController extends AbstractActionController
 
         if($request->isPost()) 
         { 
-
+            $data = $request->getPost();
+            
             $adapter = $this->authenticationService->getAdapter();
             $adapter->setIdentity($data['login']);
             $adapter->setCredential($data['password']);
@@ -29,7 +30,8 @@ class UsuarioController extends AbstractActionController
 
             $adapter = $authService->getAdapter();
 
-            if ($authResult->isValid()) {
+            if ($authResult->isValid()) 
+            {
                 return $this->redirect()->toRoute('album');
             }
 
